@@ -5,6 +5,7 @@ import {
   Request,
   UseGuards,
   Get,
+  Headers,
 } from '@nestjs/common';
 import { LocalAuthGuard } from '../auth/guards/local-auth.guard';
 import { AuthService } from '../auth/auth.service';
@@ -14,20 +15,18 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('signup')
-  create(@Body() createUserDto) {
-    return 'success';
-  }
-
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req) {
-    return this.authService.login(req.user);
+    return await this.authService.login(req.user, req.body.type);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('me')
-  async findMe(@Request() req) {
-    return 'user';
+  async findMe(@Request() req, @Headers() headers) {
+    return await this.authService.findMe(
+      req,
+      headers.authorization.split(' ')[1],
+    );
   }
 }

@@ -30,10 +30,24 @@ export class AuthService {
     return null;
   }
 
-  async login(user) {
-    const payload = { username: user.username, sub: user.userId };
+  async login(user, type) {
+    const payload = { username: user.username, sub: user.userId, type };
     return {
       access_token: this.jwtService.sign(payload),
     };
+  }
+
+  async findMe(req, token) {
+    const tokenData = this.jwtService.verify(token, {
+      secret: process.env.JWT_SECRET,
+    });
+    console.log(tokenData.type);
+    let user;
+    if (tokenData.type === 'Patient') {
+      user = await this.patientModel.findById(req.user.userId);
+    } else {
+      user = await this.doctorModel.findById(req.user.userId);
+    }
+    return user;
   }
 }
