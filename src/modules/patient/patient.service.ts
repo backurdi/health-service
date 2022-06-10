@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { Doctor, DoctorDocument } from '../doctor/doctor.schema';
 import { CreatePatientDto } from './dto/create-patient.dto';
 import { UpdatePatientDto } from './dto/update-patient.dto';
 import { Patient, PatientDocument } from './patient.schema';
@@ -10,10 +11,15 @@ export class PatientService {
   constructor(
     @InjectModel(Patient.name)
     private readonly patientModel: Model<PatientDocument>,
+    @InjectModel(Doctor.name)
+    private readonly docotorModel: Model<DoctorDocument>,
   ) {}
   async create(createPatientDto: CreatePatientDto) {
-    const createPatient = await this.patientModel.create(createPatientDto);
-    return createPatient;
+    const patient = await this.patientModel.create(createPatientDto);
+    await this.docotorModel.findByIdAndUpdate(createPatientDto.doctor, {
+      $push: { patients: patient._id },
+    });
+    return patient;
   }
 
   async findAll(): Promise<Patient[]> {

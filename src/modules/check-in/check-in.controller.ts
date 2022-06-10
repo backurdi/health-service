@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 import { CheckInService } from './check-in.service';
@@ -18,9 +19,8 @@ export class CheckInController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  async create(@Body() createCheckInDto: CreateCheckInDto) {
-    await this.checkInService.create(createCheckInDto);
-    return 'success';
+  async create(@Request() createCheckInDto) {
+    return await this.checkInService.create(createCheckInDto);
   }
 
   @UseGuards(JwtAuthGuard)

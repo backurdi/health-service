@@ -8,19 +8,18 @@ import { DoctorModule } from './modules/doctor/doctor.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
-import { UserModule } from './modules/user/user.module';
+import { Doctor, DoctorSchema } from './modules/doctor/doctor.schema';
 
 @Module({
   imports: [
+    DoctorModule,
+    PatientModule,
+    CheckInModule,
+    AuthModule,
     ConfigModule.forRoot({ isGlobal: true, load: [configuration] }),
     MongooseModule.forRoot(
-      `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@health.eep9xg5.mongodb.net/?retryWrites=true&w=majority`,
+      `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@health.eep9xg5.mongodb.net/health?retryWrites=true&w=majority`,
     ),
-    CheckInModule,
-    PatientModule,
-    DoctorModule,
-    AuthModule,
-    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
