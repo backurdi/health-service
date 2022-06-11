@@ -18,7 +18,6 @@ export class CheckInService {
     const createdCheckIn = await this.checkInModel.create(
       createCheckInDto.body,
     );
-    console.log(createCheckInDto.body);
     await this.patientModel.findByIdAndUpdate(createCheckInDto.user.userId, {
       $push: { checkIns: createdCheckIn._id },
     });

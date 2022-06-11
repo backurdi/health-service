@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
+import { RolesEnum } from 'src/utils/role.enum';
 import validator from 'validator';
 import { Patient } from '../patient/patient.schema';
 
@@ -65,6 +66,9 @@ export class Doctor {
 
   @Prop({ type: [mongoose.Schema.Types.ObjectId], ref: 'Patient', default: [] })
   patients: Patient[];
+
+  @Prop({ default: RolesEnum.Doctor })
+  role: string;
 }
 
 export const DoctorSchema = SchemaFactory.createForClass(Doctor);

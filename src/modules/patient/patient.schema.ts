@@ -72,7 +72,7 @@ export class Patient {
   checkIns: CheckIn;
 
   @Prop({ default: RolesEnum.Patient })
-  roles: string;
+  role: string;
 }
 
 export const PatientSchema = SchemaFactory.createForClass(Patient);
