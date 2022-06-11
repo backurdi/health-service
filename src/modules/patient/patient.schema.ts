@@ -3,6 +3,7 @@ import * as mongoose from 'mongoose';
 import { Doctor } from '../doctor/doctor.schema';
 import validator from 'validator';
 import { CheckIn } from '../check-in/check-in.schema';
+import { RolesEnum } from 'src/utils/role.enum';
 
 export type PatientDocument = Patient & Document;
 
@@ -15,6 +16,15 @@ export class Patient {
     required: [true, 'Please tell us your name!'],
   })
   name: string;
+
+  @Prop({
+    type: String,
+    required: [true, 'Please provide your email'],
+    unique: true,
+    lowercase: true,
+    validate: [validator.isEmail, 'Please provide a valid email'],
+  })
+  email: string;
 
   @Prop()
   photo: string;
@@ -60,6 +70,9 @@ export class Patient {
 
   @Prop({ type: [mongoose.Schema.Types.ObjectId], ref: 'CheckIn', default: [] })
   checkIns: CheckIn;
+
+  @Prop({ default: RolesEnum.Patient })
+  roles: string;
 }
 
 export const PatientSchema = SchemaFactory.createForClass(Patient);

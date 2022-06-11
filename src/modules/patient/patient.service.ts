@@ -27,7 +27,7 @@ export class PatientService {
   }
 
   async findOne(id: string): Promise<Patient> {
-    return await this.patientModel.findOne({ _id: id }).exec();
+    return await this.patientModel.findById(id).exec();
   }
 
   async update(

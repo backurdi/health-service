@@ -12,6 +12,9 @@ import { PatientService } from './patient.service';
 import { UpdatePatientDto } from './dto/update-patient.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CreatePatientDto } from './dto/create-patient.dto';
+import { RolesGuard } from '../auth/guards/role-auth.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { RolesEnum } from 'src/utils/role.enum';
 
 @Controller('patient')
 export class PatientController {
@@ -22,7 +25,8 @@ export class PatientController {
     return this.patientService.create(createPatientDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(RolesEnum.Doctor)
   @Get()
   findAll() {
     return this.patientService.findAll();

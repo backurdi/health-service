@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import crypto from 'crypto';
@@ -9,6 +9,7 @@ import { PatientController } from './patient.controller';
 import { Patient, PatientSchema } from './patient.schema';
 import { PatientService } from './patient.service';
 import { Doctor, DoctorSchema } from '../doctor/doctor.schema';
+import { DoctorService } from '../doctor/doctor.service';
 
 @Module({
   imports: [
@@ -28,18 +29,11 @@ import { Doctor, DoctorSchema } from '../doctor/doctor.schema';
 
             // Delete passwordConfirm field
             this.passwordConfirm = undefined;
-            next();
           });
           schema.pre('save', function (next) {
             if (!this.isModified('password') || this.isNew) return next();
 
             this.passwordChangedAt = Date.now() - 1000;
-            next();
-          });
-
-          schema.pre(/^find/, function (next) {
-            // this points to the current query
-            // this.find({ active: { $ne: false } });
             next();
           });
 
@@ -76,12 +70,12 @@ import { Doctor, DoctorSchema } from '../doctor/doctor.schema';
           return schema;
         },
       },
+      { name: Doctor.name, useFactory: () => DoctorSchema },
     ]),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: process.env.JWT_EXPIRES_IN },
     }),
-    MongooseModule.forFeature([{ name: Doctor.name, schema: DoctorSchema }]),
   ],
   controllers: [PatientController],
   providers: [PatientService],

@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import { Model } from 'mongoose';
+import { RolesEnum } from 'src/utils/role.enum';
 import { Doctor, DoctorDocument } from '../doctor/doctor.schema';
 import { Patient, PatientDocument } from '../patient/patient.schema';
 
@@ -16,32 +17,38 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, pass: string): Promise<any> {
+  async validateUser(email: string, pass: string, role: any): Promise<any> {
     let user: any;
-    user = await this.patientModel.findOne({ email }).select('+password');
-    if (!user) {
+    if (role === RolesEnum.Patient) {
+      user = await this.patientModel.findOne({ email }).select('+password');
+    } else {
       user = await this.doctorModel.findOne({ email }).select('+password');
     }
-
     if (user && (await bcrypt.compare(pass, user.password))) {
       const { name, _id } = user;
-      return { username: name, userId: _id };
+      return { username: name, userId: _id, role: role };
     }
     return null;
   }
 
-  async login(user, type) {
-    const payload = { username: user.username, sub: user.userId, type };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+  async login(user, body) {
+    if (this.validateUser(body.email, body.password, body.role)) {
+      const payload = {
+        username: user.username,
+        sub: user.userId,
+        role: body.role,
+      };
+      return {
+        access_token: this.jwtService.sign(payload),
+      };
+    }
+    return null;
   }
 
   async findMe(req, token) {
     const tokenData = this.jwtService.verify(token, {
       secret: process.env.JWT_SECRET,
     });
-    console.log(tokenData.type);
     let user;
     if (tokenData.type === 'Patient') {
       user = await this.patientModel.findById(req.user.userId);

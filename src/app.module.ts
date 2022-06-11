@@ -12,9 +12,9 @@ import { Doctor, DoctorSchema } from './modules/doctor/doctor.schema';
 
 @Module({
   imports: [
-    DoctorModule,
     PatientModule,
     CheckInModule,
+    DoctorModule,
     AuthModule,
     ConfigModule.forRoot({ isGlobal: true, load: [configuration] }),
     MongooseModule.forRoot(

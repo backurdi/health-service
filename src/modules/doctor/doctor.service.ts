@@ -24,8 +24,8 @@ export class DoctorService {
     return `This action returns a #${id} doctor`;
   }
 
-  update(id: number, updateDoctorDto: UpdateDoctorDto) {
-    return `This action updates a #${id} doctor`;
+  async update(id: string, updateDoctorDto: UpdateDoctorDto) {
+    return await this.doctorModel.findByIdAndUpdate(id, updateDoctorDto);
   }
 
   remove(id: number) {
