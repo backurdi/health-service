@@ -6,6 +6,8 @@ import {
   UseGuards,
   Get,
   Headers,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { LocalAuthGuard } from '../auth/guards/local-auth.guard';
 import { AuthService } from '../auth/auth.service';
@@ -24,9 +26,13 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('me')
   async findMe(@Request() req, @Headers() headers) {
-    return await this.authService.findMe(
+    const user = await this.authService.findMe(
       req,
       headers.authorization.split(' ')[1],
     );
+    if (!user) {
+      throw new HttpException('No user found', HttpStatus.NOT_FOUND);
+    }
+    return user;
   }
 }

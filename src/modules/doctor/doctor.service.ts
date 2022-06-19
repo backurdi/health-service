@@ -16,19 +16,26 @@ export class DoctorService {
     return await this.doctorModel.create(createDoctorDto);
   }
 
-  findAll() {
-    return `This action returns all doctor`;
+  async findAll() {
+    return await this.doctorModel.find().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} doctor`;
+  async findOne(id: string) {
+    return await this.doctorModel.findById(id).exec();
   }
 
   async update(id: string, updateDoctorDto: UpdateDoctorDto) {
-    return await this.doctorModel.findByIdAndUpdate(id, updateDoctorDto);
+    return await this.doctorModel.findByIdAndUpdate(id, updateDoctorDto, {
+      new: true,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} doctor`;
+  async remove(id: string) {
+    const deletedUser = await this.doctorModel
+      .findByIdAndRemove({
+        _id: id,
+      })
+      .exec();
+    return deletedUser;
   }
 }

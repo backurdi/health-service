@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
-import { RolesEnum } from 'src/utils/role.enum';
+import { RolesEnum } from 'src/utils/enums/role.enum';
 import validator from 'validator';
 import { Patient } from '../patient/patient.schema';
 

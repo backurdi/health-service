@@ -8,6 +8,7 @@ import crypto from 'crypto';
 import { ConfigModule } from '@nestjs/config';
 import configuration from 'src/config/configuration';
 import { JwtModule } from '@nestjs/jwt';
+import { PatientModule } from '../patient/patient.module';
 
 @Module({
   imports: [
@@ -72,6 +73,7 @@ import { JwtModule } from '@nestjs/jwt';
         },
       ]),
     ),
+    PatientModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: process.env.JWT_EXPIRES_IN },

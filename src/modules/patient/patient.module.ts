@@ -79,5 +79,6 @@ import { DoctorService } from '../doctor/doctor.service';
   ],
   controllers: [PatientController],
   providers: [PatientService],
+  exports: [PatientService],
 })
 export class PatientModule {}

@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import { Model } from 'mongoose';
-import { RolesEnum } from 'src/utils/role.enum';
+import { RolesEnum } from 'src/utils/enums/role.enum';
 import { Doctor, DoctorDocument } from '../doctor/doctor.schema';
 import { Patient, PatientDocument } from '../patient/patient.schema';
 

@@ -3,7 +3,9 @@ import * as mongoose from 'mongoose';
 import { Doctor } from '../doctor/doctor.schema';
 import validator from 'validator';
 import { CheckIn } from '../check-in/check-in.schema';
-import { RolesEnum } from 'src/utils/role.enum';
+import { RolesEnum } from 'src/utils/enums/role.enum';
+import { PatientSuggestions } from 'src/interfaces/patientSuggestionI';
+import { SuggestionSchema } from './suggestion.schema';
 
 export type PatientDocument = Patient & Document;
 
@@ -70,6 +72,11 @@ export class Patient {
 
   @Prop({ type: [mongoose.Schema.Types.ObjectId], ref: 'CheckIn', default: [] })
   checkIns: CheckIn;
+
+  @Prop({
+    type: [SuggestionSchema],
+  })
+  suggestions: PatientSuggestions[];
 
   @Prop({ default: RolesEnum.Patient })
   role: string;
