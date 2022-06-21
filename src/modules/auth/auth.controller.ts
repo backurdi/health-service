@@ -8,6 +8,7 @@ import {
   Headers,
   HttpException,
   HttpStatus,
+  HttpCode,
 } from '@nestjs/common';
 import { LocalAuthGuard } from '../auth/guards/local-auth.guard';
 import { AuthService } from '../auth/auth.service';
@@ -19,6 +20,7 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
+  @HttpCode(HttpStatus.OK)
   async login(@Request() req) {
     return await this.authService.login(req.user, req.body);
   }
