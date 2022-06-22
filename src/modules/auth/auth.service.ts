@@ -50,7 +50,7 @@ export class AuthService {
       secret: process.env.JWT_SECRET,
     });
     let user;
-    if (tokenData.type === 'Patient') {
+    if (tokenData.role === 'Patient') {
       user = await this.patientModel.findById(req.user.userId);
     } else {
       user = await this.doctorModel.findById(req.user.userId);
