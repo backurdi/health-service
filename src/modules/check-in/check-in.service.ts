@@ -24,12 +24,21 @@ export class CheckInService {
     return createdCheckIn;
   }
 
-  async findAll(): Promise<CheckIn[]> {
-    return this.checkInModel.find().exec();
+  async findAll(userId: string): Promise<CheckIn[]> {
+    console.log(userId);
+    return await this.checkInModel
+      .find({ patient: userId })
+      .sort({ createdAt: -1 });
   }
 
   async findOne(id: string): Promise<CheckIn> {
     return this.checkInModel.findOne({ _id: id }).exec();
+  }
+
+  async update(id: string, updateCheckIn): Promise<Patient> {
+    return await this.checkInModel.findByIdAndUpdate(id, updateCheckIn, {
+      new: true,
+    });
   }
 
   async delete(id: string) {

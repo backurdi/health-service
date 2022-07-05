@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Request,
   UseGuards,
@@ -25,13 +26,20 @@ export class CheckInController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async findAll(): Promise<CheckIn[]> {
-    return this.checkInService.findAll();
+  async findAllForUser(@Request() req): Promise<CheckIn[]> {
+    console.log(req.user);
+    return this.checkInService.findAll(req.user.userId);
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<CheckIn> {
     return this.checkInService.findOne(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateCheckIn) {
+    return this.checkInService.update(id, updateCheckIn);
   }
 
   @Delete(':id')
