@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { CheckIn, CheckInDocument } from './check-in.schema';
-import { CreateCheckInDto } from './dto/create-check-in.dto';
 import { Patient, PatientDocument } from '../patient/patient.schema';
 
 @Injectable()
@@ -25,7 +24,6 @@ export class CheckInService {
   }
 
   async findAll(userId: string): Promise<CheckIn[]> {
-    console.log(userId);
     return await this.checkInModel
       .find({ patient: userId })
       .sort({ createdAt: -1 });

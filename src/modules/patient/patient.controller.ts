@@ -47,6 +47,12 @@ export class PatientController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Patch(':id/suggestionDone')
+  suggestionDone(@Param('id') id, @Body() body: { suggestionId: string }) {
+    return this.patientService.setSuggestionDone(id, body.suggestionId);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Roles(RolesEnum.Doctor)
   @Delete(':id')
   remove(@Param('id') id: string) {

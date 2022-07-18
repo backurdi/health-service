@@ -13,6 +13,9 @@ export class Suggestion {
   @Prop()
   description: string;
 
+  @Prop()
+  done: boolean;
+
   @Prop({ type: String, enum: ['training', 'medication'] })
   type: string;
 }

@@ -10,7 +10,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CheckInService } from './check-in.service';
-import { CreateCheckInDto } from './dto/create-Check-in.dto';
 import { CheckIn } from './check-in.schema';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
@@ -27,7 +26,6 @@ export class CheckInController {
   @UseGuards(JwtAuthGuard)
   @Get()
   async findAllForUser(@Request() req): Promise<CheckIn[]> {
-    console.log(req.user);
     return this.checkInService.findAll(req.user.userId);
   }
 

@@ -66,4 +66,14 @@ export class PatientService {
 
     return patient;
   }
+
+  async setSuggestionDone(id, suggestionId: string) {
+    const patient = await this.patientModel.findById(id);
+    patient.suggestions.forEach((suggestion) => {
+      if (suggestion._id.equals(suggestionId)) {
+        suggestion.done = true;
+      }
+    });
+    await this.patientModel.findByIdAndUpdate(id, patient);
+  }
 }
