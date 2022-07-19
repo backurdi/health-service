@@ -7,8 +7,8 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const PORT = configService.get<number>('PORT');
   const whitelist = [
-    'https://sensational-cocada-df9e56.netlify.app/',
-    'https://www.sensational-cocada-df9e56.netlify.app/',
+    'https://sensational-cocada-df9e56.netlify.app',
+    'https://www.sensational-cocada-df9e56.netlify.app',
   ];
   app.enableCors({
     origin: function (origin, callback) {

@@ -71,7 +71,7 @@ export class Patient {
   doctor: Doctor;
 
   @Prop({ type: [mongoose.Schema.Types.ObjectId], ref: 'CheckIn', default: [] })
-  checkIns: CheckIn;
+  checkIns: mongoose.Schema.Types.ObjectId[];
 
   @Prop({
     type: [SuggestionSchema],

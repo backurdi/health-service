@@ -18,7 +18,7 @@ export class CheckInService {
       createCheckInDto.body,
     );
     await this.patientModel.findByIdAndUpdate(createCheckInDto.user.userId, {
-      $push: { checkIns: createdCheckIn._id },
+      $push: { checkIns: createdCheckIn._id as any },
     });
     return createdCheckIn;
   }

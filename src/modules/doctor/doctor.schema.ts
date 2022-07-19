@@ -1,3 +1,4 @@
+import { Type } from '@nestjs/common';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { RolesEnum } from 'src/utils/enums/role.enum';
@@ -65,7 +66,7 @@ export class Doctor {
   active: boolean;
 
   @Prop({ type: [mongoose.Schema.Types.ObjectId], ref: 'Patient', default: [] })
-  patients: Patient[];
+  patients: [mongoose.Schema.Types.ObjectId];
 
   @Prop({ default: RolesEnum.Doctor })
   role: string;

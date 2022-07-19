@@ -18,7 +18,7 @@ export class PatientService {
   async create(createPatientDto: CreatePatientDto) {
     const patient = await this.patientModel.create(createPatientDto);
     await this.docotorModel.findByIdAndUpdate(createPatientDto.doctor, {
-      $push: { patients: patient._id },
+      $push: { patients: patient._id as any },
     });
     return patient;
   }
@@ -49,10 +49,7 @@ export class PatientService {
     return deletedUser;
   }
 
-  async addSuggestion(
-    id: string,
-    suggestion: AddSuggestionDto,
-  ): Promise<Patient> {
+  async addSuggestion(id: string, suggestion): Promise<Patient> {
     const patient = await this.patientModel.findByIdAndUpdate(
       id,
       {
