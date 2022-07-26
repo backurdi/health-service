@@ -70,9 +70,6 @@ export class Patient {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Doctor', required: true })
   doctor: Doctor;
 
-  @Prop({ type: [mongoose.Schema.Types.ObjectId], ref: 'CheckIn', default: [] })
-  checkIns: mongoose.Schema.Types.ObjectId[];
-
   @Prop({
     type: [SuggestionSchema],
   })
